@@ -32,7 +32,6 @@ class CategoryController {
       const categoryList = await Category.findAll();
       const subCategoryList = await SubCategory.findAll();
 
-      // res.status(200).send(subCategoryList);
       res
         .status(200)
         .send(

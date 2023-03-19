@@ -6,10 +6,9 @@ import AuthButton from "./AuthButton/AuthButton";
 // ? Assets
 import { viewStoreIcon, searchIcon } from "~/components/Img/Img";
 import lenleys_main_logo from "~/assets/img/logo/lenleys_main_logo.png";
-// ? Classname condition
+
 import style from "./Header.module.scss";
 import classNames from "classnames/bind";
-
 const cx = classNames.bind(style);
 
 const storeLocationBtnContentStyle = {

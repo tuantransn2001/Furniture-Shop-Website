@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import DropDown from "~/components/helpers/DropDown/DropDown";
 import DragAndDrop from "~/components/helpers/DragAndDrop/DragAndDrop";
 import classNames from "classnames/bind";
@@ -82,17 +82,47 @@ const filterDropDownData = [
   },
 ];
 
-const renderDropDownFilter = () => {
+const DropDownFilter = () => {
+  const dropdownsRef = useRef([]);
+  const [options, setOptions] = useState([]);
+
+  console.log(options);
+
+  useEffect(() => {
+    const dropdownsEl = dropdownsRef.current;
+    dropdownsEl &&
+      dropdownsEl.map((dropdownEl) => {
+        const { label, el } = dropdownEl;
+        el.addEventListener("change", (e) => {
+          const userOptionSelectedText =
+            e.target.options[e.target.selectedIndex].innerHTML;
+
+          setOptions((prev) => {
+            return [...prev, { label, value: userOptionSelectedText }];
+          });
+        });
+      });
+  }, []);
+
   return filterDropDownData.map((data, index) => {
     return (
       <div className="c-3 gutter" key={index}>
-        <DropDown label={data.label} options={data.options} />
+        <DropDown
+          label={data.label}
+          options={data.options}
+          ref={(el) => {
+            dropdownsRef.current.push({
+              label: data.label,
+              el,
+            });
+          }}
+        />
       </div>
     );
   });
 };
 
-const renderDragAndDrop = () => {
+const MyDragAndDrop = () => {
   return (
     <div className="c-3 gutter">
       <DragAndDrop label="Price" range={{ from: 300, to: 2000 }} />
@@ -104,8 +134,8 @@ const FilterBox = (props) => {
   return (
     <div className={`${cx("product-filter-wrapper")} grid`}>
       <div className="row">
-        {renderDropDownFilter()}
-        {renderDragAndDrop()}
+        <DropDownFilter />
+        <MyDragAndDrop />
       </div>
     </div>
   );

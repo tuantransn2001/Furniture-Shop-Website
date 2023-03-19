@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export const useTitle = (content) => {
   useEffect(() => {
     content && (document.title = content);
-  }, [content]);
+  }, []);
 };
 
 export const useDebounce = (value, delay) => {

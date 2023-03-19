@@ -1,6 +1,11 @@
 import React from "react";
 import ConfigBtn from "../ConfigBtn/ConfigBtn";
 
+import classNames from "classnames/bind";
+import style from "../Table.module.scss";
+
+const cx = classNames.bind(style);
+
 const renderSpecialRowStyle = (index) => {
   if (index % 2 === 0) {
     return {
@@ -45,12 +50,16 @@ const TableBody = (props) => {
             <tr key={rowDataObj.id} style={renderSpecialRowStyle(index)}>
               {Object.entries(rowDataObj).map(([key, value]) => {
                 return (
-                  <td key={key} style={renderSpecialColumnStyle(key)}>
+                  <td
+                    className={cx("table-body-column")}
+                    key={key}
+                    style={renderSpecialColumnStyle(key)}
+                  >
                     {value}
                   </td>
                 );
               })}
-              <td>
+              <td className={cx("table-body-column")}>
                 {props.actionOptions &&
                   props.actionOptions.map(({ type, handler }) => {
                     return (

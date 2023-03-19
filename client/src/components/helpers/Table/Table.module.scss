@@ -12,17 +12,18 @@ $border-style: 1px solid #abb0be;
   width: 100%;
   font-family: "DM Sans", sans-serif;
 
-  thead tr th {
+  .table-head-column {
     @extend .column-style;
     padding: 0rem 1.5rem;
     padding-bottom: 1rem;
     @include text-style($fs-3, $medium, 3rem, none, left, uppercase, #5a6474);
   }
 
-  tbody tr td {
+  .table-body-column {
     @extend .column-style;
     border: none;
     padding: 2rem 1.5rem;
+    height: 0.8rem;
     @include text-style($fs-2, $medium, none, none, left, none, #5a6474);
   }
 }

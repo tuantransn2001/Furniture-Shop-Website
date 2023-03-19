@@ -13,6 +13,7 @@ const InputField = (props, ref) => {
     label,
     type,
     fieldName,
+    isRequire,
     placeholder,
     description,
     options,
@@ -29,6 +30,7 @@ const InputField = (props, ref) => {
     placeholder,
     customStyle,
     regex_check_type,
+    isRequire,
   };
   const renderDataPicker = () => {
     switch (type) {

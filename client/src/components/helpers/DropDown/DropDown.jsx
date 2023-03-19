@@ -1,10 +1,12 @@
-import React, { forwardRef } from "react";
+import React, { useState, forwardRef } from "react";
 import classNames from "classnames/bind";
 import style from "./DropDown.module.scss";
 const cx = classNames.bind(style);
 
 const DropDown = (props, ref) => {
   const { label, options } = props;
+  const [userChoose, getUserChoose] = useState();
+
   const renderLabel = () => {
     return (
       label && (

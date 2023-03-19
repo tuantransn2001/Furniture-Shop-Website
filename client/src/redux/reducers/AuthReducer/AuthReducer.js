@@ -15,10 +15,8 @@ const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case STORE_CURRENT_USER_TOKEN: {
       state.user_token = action.payload.token;
-      state.refresh_token = action.payload.refreshToken;
 
       localStorage.setItem("access_token", state.user_token);
-      localStorage.setItem("refresh_token", state.refresh_token);
       return { ...state };
     }
     case STORE_CURRENT_USER_DETAIL: {

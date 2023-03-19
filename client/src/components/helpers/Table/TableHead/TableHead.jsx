@@ -1,6 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+
+import classNames from "classnames/bind";
+import style from "../Table.module.scss";
+const cx = classNames.bind(style);
 
 const filterIconWrapperStyle = { marginLeft: ".6rem", opacity: ".6" };
 
@@ -27,9 +31,13 @@ const TableHead = (props) => {
       <tr>
         {data &&
           data.map((content) => {
-            return <th key={content}>{renderContent(content)}</th>;
+            return (
+              <th className={cx("table-head-column")} key={content}>
+                {renderContent(content)}
+              </th>
+            );
           })}
-        <th>Action</th>
+        <th className={cx("table-head-column")}>Action</th>
       </tr>
     </thead>
   );

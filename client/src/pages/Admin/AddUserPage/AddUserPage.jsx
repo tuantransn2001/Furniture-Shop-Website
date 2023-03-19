@@ -85,12 +85,12 @@ const AddUserPageHeader = (props) => {
 };
 
 const AddUserPage = (props) => {
-  const { data, err, isLoading } = useGet("user");
+  const { fetchResultData, isLoading } = useGet("user");
   const [isAceptReloadPage, setIsAceptReloadPage] = useState(false);
   const tableHead = ["name", "email", "status", "role"];
   const tableBody =
-    data &&
-    data.map((userInfo) => {
+    fetchResultData.data &&
+    fetchResultData.data.map((userInfo) => {
       return {
         name: `${userInfo.lastName} ${userInfo.firstName}`,
         email: userInfo.email,
@@ -99,17 +99,18 @@ const AddUserPage = (props) => {
       };
     });
   const handleEditUserById = async (id) => {};
-  const handleDeleteUserById = async (id) => {
-    const url = `user/${id}`;
-    const fetchResult = await fetchApi.get(url);
-    try {
-      if (fetchResult.status === 201) {
-        setIsAceptReloadPage(true);
-      }
-    } catch (err) {
-      console.log(`handleDeleteUserById is working wrong!! - Err: ${err}`);
-    }
-  };
+  // TODO: Fix
+  // const handleDeleteUserById = async (id) => {
+  //   const url = `user/${id}`;
+  //   const fetchResult = await fetchApi.get(url);
+  //   try {
+  //     if (fetchResult.status === 201) {
+  //       setIsAceptReloadPage(true);
+  //     }
+  //   } catch (err) {
+  //     console.log(`handleDeleteUserById is working wrong!! - Err: ${err}`);
+  //   }
+  // };
   useEffect(() => {
     isAceptReloadPage && window.location.reload();
   }, [isAceptReloadPage]);
@@ -134,10 +135,11 @@ const AddUserPage = (props) => {
               type: "edit",
               handler: handleEditUserById,
             },
-            {
-              type: "delete",
-              handler: handleDeleteUserById,
-            },
+            // TODO: Fix
+            // {
+            //   type: "delete",
+            //   handler: handleDeleteUserById,
+            // },
           ]}
         />
       </div>

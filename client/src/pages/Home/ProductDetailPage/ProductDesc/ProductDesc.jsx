@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 import AddProductButton from "./AddProductButton/AddProductButton";
 import payment_cards from "~/assets/img/Products/payment_cards.png";
+import PaymentMethod from "~/components/helpers/PaymentMethod/PaymentMethod";
+
+import { useSelector } from "react-redux";
 
 import classNames from "classnames/bind";
 import style from "./ProductDesc.module.scss";
@@ -38,62 +41,7 @@ const ProductOptions = (props) => {
     )
   );
 };
-const PaymentOptions = (props) => {
-  const paymentOptionRef = useRef([]);
-  const [indexActive, setIndexActive] = useState(null);
 
-  const paymentOptionData = [
-    {
-      type: "Pay Deposit",
-      benefit: "Pay a 25% deposit per item",
-    },
-    {
-      type: "Pay Full",
-    },
-  ];
-
-  useEffect(() => {
-    const paymentOptionEls = paymentOptionRef.current;
-
-    paymentOptionEls &&
-      paymentOptionEls.map((el, index) => {
-        el &&
-          el.addEventListener("click", () => {
-            setIndexActive(index);
-          });
-      });
-  }, []);
-
-  const renderOptions = () => {
-    return paymentOptionData.map((paymentOption, index) => {
-      return (
-        <div className="c-6 gutter" key={paymentOption.type}>
-          <label
-            htmlFor={paymentOption.type}
-            className={cx("payment-option")}
-            ref={(el) => {
-              paymentOptionRef.current.push(el);
-            }}
-          >
-            <input
-              type="radio"
-              id={paymentOption.type}
-              checked={indexActive === index}
-            />
-            <span>{paymentOption.type}</span>
-          </label>
-          <span className={cx("payment-benefit")}>{paymentOption.benefit}</span>
-        </div>
-      );
-    });
-  };
-
-  return (
-    <div className={`${cx("payment-options-wrapper")} grid`}>
-      <div className="row">{renderOptions()}</div>
-    </div>
-  );
-};
 const ProductMeta = (props) => {
   const { productDetail } = props;
   return (
@@ -120,7 +68,11 @@ const ProductMeta = (props) => {
     </>
   );
 };
-const ProductDesc = ({ productDetail }) => {
+const ProductDesc = (props) => {
+  const productDetail = useSelector(
+    (state) => state.CartReducer.currentProductDetail
+  );
+
   return (
     <div className={cx("product-description-wrapper")}>
       <div className="row">
@@ -170,8 +122,18 @@ const ProductDesc = ({ productDetail }) => {
               >{`£${productDetail.product_price}`}</span>
             </span>
             <ProductOptions productDetail={productDetail} />
-            <PaymentOptions />
-            <AddProductButton productDetail={productDetail} />
+            <PaymentMethod
+              optionList={[
+                {
+                  type: "Pay Deposit",
+                  benefit: "Pay a 25% deposit per item",
+                },
+                {
+                  type: "Pay Full",
+                },
+              ]}
+            />
+            <AddProductButton />
             <ProductMeta productDetail={productDetail} />
           </div>
         </div>

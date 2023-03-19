@@ -61,4 +61,3 @@ export const useLogin = (isUserInputValid, formData) => {
 
   return { data, isLoading };
 };
-export const useAddProduct = (productDetail) => {};

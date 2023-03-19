@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import MyBreadcrumbs from "~/components/helpers/MyBreadcrumbs/MyBreadcrumbs";
 import AddProductPage from "~/pages/Admin/AddProductPage/AddProductPage";
-import AddUserPage from "~/pages/Admin/AddUserPage/AddUserPage";
 import classNames from "classnames/bind";
 import style from "./MainDashboard.module.scss";
 import Header from "./Header/Header";
@@ -34,27 +33,13 @@ const DashboardTitle = ({ title }) => {
 };
 
 const MainDashboard = (props) => {
-  const [currentPage, setCurrentPage] = useState("product");
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case "user": {
-        return <AddUserPage />;
-      }
-      case "product": {
-        return <AddProductPage />;
-      }
-      default: {
-        return <AddUserPage />;
-      }
-    }
-  };
   return (
     <div className={cx("main-dashboard-wrapper")}>
       <Header />
       <div className={cx("main-dashboard-body-wrapper")}>
         <DashboardTitle title={"Employees"} />
         <div className={cx("main-dashboard-content-wrapper")}>
-          {renderCurrentPage()}
+          <AddProductPage />
         </div>
       </div>
     </div>

@@ -1,27 +1,11 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import Button from "~/components/helpers/Button/Button";
 import Tooltip from "~/components/helpers/Tooltip/Tooltip";
-import { fetchApi } from "~/services/utils/fetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames/bind";
 import style from "./Product.module.scss";
 const cx = classNames.bind(style);
-
-const handleDeleteProduct = async (event, id) => {
-  const fetchResult = await fetchApi.post(`product/${id}`);
-
-  try {
-    const { status } = fetchResult;
-    if (status === 201) {
-      window.location.reload();
-    } else {
-      console.log("Fetch Api - Delete user is working wrong!!");
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 const Product = (props) => {
   const deleteProductBtnRef = useRef(null);
@@ -29,28 +13,17 @@ const Product = (props) => {
     isLoading: props.isLoading,
   });
 
-  useEffect(() => {
-    const deleteProductBtnEl = deleteProductBtnRef.current;
-    deleteProductBtnEl &&
-      deleteProductBtnEl.addEventListener("click", (event) => {
-        handleDeleteProduct(event, props.id);
-      });
-    return () =>
-      deleteProductBtnEl &&
-      deleteProductBtnEl.removeEventListener("click", (event) => {
-        handleDeleteProduct(event, props.id);
-      });
-  }, []);
-
   return (
     <div className={productWrapperClassName}>
       {/* Top content */}
       <div className={cx("product-info-top-content")}>
         <div className={cx("product-top-content-info")}>
           <a href="#" className={cx("product-name-link")}>
-            Nikless
+            {props.product_name}
           </a>
-          <span className={cx("product-category")}>Bed & Bedroom</span>
+          <span className={cx("product-category")}>
+            {props.product_category}
+          </span>
         </div>
         <span className={cx("product-badge")}>Sell</span>
       </div>
@@ -85,16 +58,14 @@ const Product = (props) => {
       <div className={`${cx("product-admin-config-btns")} grid`}>
         <div className="row">
           <div className="c-6 gutter">
-            <Tooltip placement="top" promptText="The feature is developing">
-              <Button size="small" type="config-btn--edit" maxSize>
-                Edit
-              </Button>
-            </Tooltip>
+            <Button size="small" type="primary" maxSize>
+              Edit
+            </Button>
           </div>
-          <div className="c-6  gutter">
+          <div className="c-6 gutter">
             <Button
               size="small"
-              type="config-btn--delete"
+              type="primary"
               maxSize
               ref={deleteProductBtnRef}
             >
@@ -108,3 +79,5 @@ const Product = (props) => {
 };
 
 export default Product;
+
+// TODO: ADD delete and update product button

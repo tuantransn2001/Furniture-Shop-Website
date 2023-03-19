@@ -15,6 +15,7 @@ import { validateObjectWithKeyList, isEmpty } from "~/common/common";
 
 import classNames from "classnames/bind";
 import style from "./Login.module.scss";
+import { fetchApi } from "../../../../../services/utils/fetch";
 const cx = classNames.bind(style);
 
 const loginFieldsData = [
@@ -45,38 +46,34 @@ const Login = ({ setFormSwitcher }) => {
     userInput
   );
 
-  const result = useLogin(validateUserInput, userInput);
-
   useEffect(() => {
-    if (result.data.statusCode === 200) {
-      const { id, email, token, refreshToken } = result.data.userDetail;
-      dispatch({
-        type: STORE_CURRENT_USER_DETAIL,
-        payload: {
-          data: { id, email },
-        },
-      });
+    validateUserInput &&
+      fetchApi.post("auth/login", userInput).then((response) => {
+        console.log(response);
+        const { id, email, token } = response.data.data;
+        dispatch({
+          type: STORE_CURRENT_USER_DETAIL,
+          payload: {
+            data: { id, email },
+          },
+        });
+        // ? Store token to local storage
+        dispatch({
+          type: STORE_CURRENT_USER_TOKEN,
+          payload: {
+            token,
+          },
+        });
 
-      // ? Store token to local storage
-      dispatch({
-        type: STORE_CURRENT_USER_TOKEN,
-        payload: {
-          token,
-          refreshToken,
-        },
+        // ? Set AuthStatus
+        dispatch({
+          type: SET_AUTH_STATUS,
+          payload: {
+            status: "login",
+          },
+        });
       });
-
-      // ? Set AuthStatus
-      dispatch({
-        type: SET_AUTH_STATUS,
-        payload: {
-          status: "login",
-        },
-      });
-    } else {
-      // TODO: HANDLE case fail
-    }
-  }, [userInput]);
+  }, [userInput, validateUserInput]);
 
   return (
     <>

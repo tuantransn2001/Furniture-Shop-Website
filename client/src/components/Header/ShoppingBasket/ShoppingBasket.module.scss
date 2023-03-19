@@ -1,6 +1,6 @@
 @import "../../../sass/helpers/variable.scss";
 @import "../../../sass/helpers/mixin.scss";
-.cart-slidebar-wrapper {
+.cart-sidebar-wrapper {
   width: 40rem;
   height: 100vh;
   padding: 0 2.8rem 2.8rem;
@@ -26,14 +26,14 @@
       left: -1.7rem;
     }
   }
-  .cart-slidebar-header {
+  .cart-sidebar-header {
     padding-top: 0.35rem;
     height: 70px;
     gap: 10px;
     position: relative;
     border-bottom: 1px solid #ddd;
     @include flex-box(row, none, center, none);
-    .cart-slidebar-title {
+    .cart-sidebar-title {
       @include text-style($fs-5, $bold, 1, 0.1rem, left, uppercase, $black-2);
     }
     .shop-cart-count {

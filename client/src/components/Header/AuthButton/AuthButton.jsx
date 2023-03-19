@@ -68,29 +68,6 @@ const UserDetail = ({ userDetail }) => {
 const AuthButton = (props) => {
   const [isAuth, setIsAuth] = useState(false);
   const [userDetail, setUserDetail] = useState({});
-  const token = localStorage.getItem("access_token");
-  useEffect(() => {
-    const handleGetUserDetailByAccessToken = async () => {
-      const fetchResultData = await fetchApi.post(
-        "auth/auth_by_access_token",
-        null,
-        {
-          headers: {
-            token,
-          },
-        }
-      );
-      if (fetchResultData.status === 200) {
-        setIsAuth(true);
-        setUserDetail(Object.assign(userDetail, fetchResultData.data));
-      } else {
-        setIsAuth(false);
-      }
-    };
-
-    handleGetUserDetailByAccessToken();
-    return () => handleGetUserDetailByAccessToken();
-  }, [token]);
 
   return isAuth ? (
     <UserDetail userDetail={userDetail} />
@@ -99,7 +76,7 @@ const AuthButton = (props) => {
       ghost
       type="widget-elementor"
       size={null}
-      linkDirection="/home/authorize"
+      linkDirection="/home/authenticate"
     >
       {authIcon()}
     </Button>

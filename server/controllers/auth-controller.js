@@ -4,15 +4,8 @@ require("dotenv").config();
 class AuthController {
   static async register(req, res) {
     try {
-      const {
-        firstName,
-        lastName,
-        type,
-        address,
-        email,
-        phoneNumber,
-        password,
-      } = req.body;
+      const { firstName, lastName, address, email, phoneNumber, password } =
+        req.body;
       // * 1: Check user is already exists or not
       const oldUser = await User.findOne({
         where: {
@@ -26,7 +19,7 @@ class AuthController {
         const newUser = {
           firstName,
           lastName,
-          type,
+          type: "client",
           address,
           email,
           phoneNumber,
@@ -49,8 +42,10 @@ class AuthController {
           password,
         },
       });
+
       if (!foundUser) {
         // ! If in-correct -> send message
+        console.log(`unfounded: ${foundUser}`);
         res.status(404).send({
           status: "error",
           message: "Email and or Password is wrong! Please try again!",
@@ -58,27 +53,19 @@ class AuthController {
       } else {
         // ? If correct ->  create token -> send to client side
         const jwtSecretKey = process.env.JWT_TOKEN_SECRET_KEY;
-        const jwtRefreshSecretKey = process.env.JWT_REFRESH_TOKEN_SECRET_KEY;
         const tokenData = {
           id: foundUser.id,
           email: foundUser.email,
         };
-        const token = jwt.sign(tokenData.toString(), jwtSecretKey, {
-          expiresIn: "7200000s",
+        const token = jwt.sign(tokenData, jwtSecretKey, {
+          expiresIn: "7200000",
         });
-        const refreshToken = jwt.sign(
-          tokenData.toString(),
-          jwtRefreshSecretKey,
-          {
-            expiresIn: "7200000s",
-          }
-        );
         const currentUser = {
           id: foundUser.id,
           email: foundUser.email,
           token,
-          refreshToken,
         };
+
         res.status(200).send({
           status: "success",
           data: currentUser,
@@ -87,7 +74,7 @@ class AuthController {
     } catch (err) {
       res.status(500).send({
         status: "error",
-        message: err,
+        message: "Server error",
       });
     }
   }

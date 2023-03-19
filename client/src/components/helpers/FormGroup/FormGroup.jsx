@@ -6,7 +6,10 @@ import FormGroupContext from "./FormGroupContext";
 const FormGroup = ({
   formFieldsData,
   getUserDataGetterObj,
-  actionButtonStatus,
+  customSubmitBtnStyle,
+  actionButtonRef,
+  actionBtnColumn,
+  formCustomStyle,
   action,
 }) => {
   let buttonStatus = "";
@@ -71,6 +74,7 @@ const FormGroup = ({
     return formFieldsData.map((fieldData, index) => {
       const {
         label,
+        isRequire,
         type,
         fieldName,
         placeholder,
@@ -108,6 +112,7 @@ const FormGroup = ({
               options,
               customStyle,
               regex_check_type,
+              isRequire,
             }}
             onChange={handleInputFieldOnChange}
           />
@@ -126,16 +131,24 @@ const FormGroup = ({
         userInputComplete,
       }}
     >
-      <div className="grid">
+      <div className="grid" style={formCustomStyle}>
         <div className="row">
           {renderFormFields()}
-          <div className="c-12 gutter mt-1">
+          <div
+            className={`c-${
+              actionBtnColumn ? actionBtnColumn : 12
+            } gutter mt-1`}
+          >
             <Button
+              ref={actionButtonRef}
               size="medium"
               type="primary"
               maxSize
               status={buttonStatus}
-              onClick={handleSubmitButtonOnClick}
+              onClick={() => {
+                handleSubmitButtonOnClick();
+              }}
+              customStyle={customSubmitBtnStyle}
             >
               {action ? action : "Submit"}
             </Button>

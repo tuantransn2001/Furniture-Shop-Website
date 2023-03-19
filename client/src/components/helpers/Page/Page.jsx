@@ -1,16 +1,17 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import classNames from "classnames/bind";
 import style from "./Page.module.scss";
 
 const cx = classNames.bind(style);
 
-const Page = ({ title, children }) => {
+const Page = ({ title, subTitle, children }) => {
   const renderPageHeader = () => {
     return (
       title && (
         <header className={cx("page-header")}>
-          <h1 className={cx("page-title")}>{title}</h1>
+          <h2 className={cx("page-title")}>{title}</h2>
+          {subTitle && <h3 className={cx("page-subTitle")}>{subTitle}</h3>}
         </header>
       )
     );
@@ -29,3 +30,7 @@ const Page = ({ title, children }) => {
 };
 
 export default Page;
+
+Page.propsType = {
+  subTitle: PropTypes.element,
+};

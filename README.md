@@ -115,7 +115,7 @@ III) Database: MySQL - Sequelize
   +Task 1: Fix Header User-Action (Admin Template)
   +Task 2: Complete Add User Page( Read , Create )
 
-- Ngaây 28/10:
+- Ngày 28/10:
   +Task 1: Fix add product page
   +Task 2: Fix product router - with upload file(image only)
 
@@ -136,5 +136,19 @@ III) Database: MySQL - Sequelize
 
 - Ngày 25/12
   +Task 1: Fix authenticate icon && authButton
+  +Task 2: Handle AuthPage success when authenticate success
 
-* Task 2: Handle AuthPage success when authenticate success
+- Ngày 14/1
+  +Task 1: Build alert function
+
+- Ngày 1/2
+  +Task 1: Fix amount in cart btn -> done
+  +Task 2: Fix Logic ViewBasketPage
+  +Task 3: Build ProcessCheckOut Page
+  +Task 4: Handle Global state cart list (redux) -> done
+
+  +Task 5: Fix all controller in server and redux store
+
+- Ngày 15/2
+  - Task 1: Build Checkout Components
+  - Task 2: Create Modal,Router,Controller Promo

@@ -4,3 +4,7 @@
   padding-left: 0.2rem;
   @include text-style($fs-2, $medium, 1, 0.05rem, left, none, $black-2);
 }
+
+.is-require-symbol {
+  color: $red-1;
+}

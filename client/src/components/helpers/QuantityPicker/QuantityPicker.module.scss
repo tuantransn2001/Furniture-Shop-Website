@@ -1,0 +1,10 @@
+@import "../../../sass/helpers/variable.scss";
+@import "../../../sass/helpers/mixin.scss";
+@import "../../../sass/helpers/extend.scss";
+
+.quantity-picker-wrapper {
+  padding: 0.6rem 0.8rem;
+  border: 0.1rem solid $primary-color;
+  @include flex-box(row, 1rem, center, space-between);
+  max-height: 40px;
+}

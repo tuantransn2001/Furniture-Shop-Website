@@ -10,8 +10,8 @@ const Tooltip = (props) => {
     textColor,
     layer,
     alwayShow,
+    disable,
     includeCloseBtn,
-    maxSize,
   } = props;
   const [isClick, setIsClick] = useState(false);
   const [isHover, setIsHover] = useState(false);
@@ -38,6 +38,7 @@ const Tooltip = (props) => {
         textColor={textColor}
         layer={layer}
         isShow={showPrompText}
+        disable={disable}
         placement={placement}
         isAlwayShow={alwayShow}
         isIncludeCloseBtn={includeCloseBtn}

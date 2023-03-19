@@ -6,14 +6,17 @@ import Page from "~/components/helpers/Page/Page";
 import Tab from "./Tab/Tab";
 import { fetchApi } from "~/services/utils/fetch";
 
+import { useDispatch } from "react-redux";
+import { SET_DEFAULT_CART_ITEM } from "~/redux/constants/CartConstants/CartConstants";
+
 import classNames from "classnames/bind";
 import style from "./ProductDetailPage.module.scss";
 const cx = classNames.bind(style);
 
 const ProductDetailPage = (props) => {
   const params = useParams();
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("Lenleys - Product detail - loading...");
-  const [productDetail, setProductDetail] = useState({});
 
   useTitle(title);
 
@@ -25,8 +28,14 @@ const ProductDetailPage = (props) => {
       );
       try {
         const { data, status } = fetchRequestResult;
+
         if (status === 200) {
-          setProductDetail(Object.assign({}, data));
+          dispatch({
+            type: SET_DEFAULT_CART_ITEM,
+            payload: {
+              product: data,
+            },
+          });
           setTitle(data.product_name);
         } else {
           console.log("handleFetchProductDetail is working wrong!");
@@ -151,7 +160,7 @@ const ProductDetailPage = (props) => {
     <Page>
       <div className={`${cx("product-detail-wrapper")} grid`}>
         {/* Product information */}
-        <ProductDesc productDetail={productDetail} />
+        <ProductDesc />
         {/* Product more information */}
         <ProductInformation />
         {/* You may also like product */}

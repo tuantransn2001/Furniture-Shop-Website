@@ -70,8 +70,6 @@ const ProductsWithPaginate = (props) => {
 
 const ProductPage = (props) => {
   const params = useParams();
-  console.log(params);
-  console.log(params["name"]);
   const { fetchResultData, isLoading } = useGet(
     `product/by_category_name/${params["name"]}`
   );

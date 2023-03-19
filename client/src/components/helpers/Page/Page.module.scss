@@ -18,6 +18,18 @@
         $primary-color
       );
     }
+    .page-subTitle {
+      margin-top: 3rem;
+      @include text-style(
+        $fs-1,
+        $normal,
+        1,
+        none,
+        center,
+        none,
+        $primary-color
+      );
+    }
   }
   .page-body {
     padding: 2rem;

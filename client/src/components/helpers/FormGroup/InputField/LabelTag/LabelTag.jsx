@@ -4,10 +4,23 @@ import classNames from "classnames/bind";
 import style from "./LabelTag.module.scss";
 const cx = classNames.bind(style);
 const LabelTag = (props) => {
-  const { label } = useContext(InputContext);
+  const { label, isRequire } = useContext(InputContext);
+
+  const renderLabelTag = () => {
+    if (isRequire) {
+      return (
+        <>
+          {label} <span className={cx("is-require-symbol")}>*</span>
+        </>
+      );
+    }
+
+    return <span>{label}</span>;
+  };
+
   return (
     <label htmlFor="form-input" className={cx("form-label")}>
-      {label}
+      {renderLabelTag()}
     </label>
   );
 };

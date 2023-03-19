@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import {
-  STORE_CURRENT_USER_TOKEN,
-  SET_AUTH_STATUS,
-} from "~/redux/constants/AuthConstants/AuthConstants";
+import { SET_AUTH_STATUS } from "~/redux/constants/AuthConstants/AuthConstants";
 
-import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 import FormGroup from "~/components/helpers/FormGroup/FormGroup.jsx";
 import SwitchFormBtn from "../SwitchFormBtn/SwitchFormBtn";
-import { usePost } from "~/services/utils/fetch";
+import { fetchApi } from "~/services/utils/fetch";
 import { validateObjectWithKeyList } from "~/common/common";
+
 import classNames from "classnames/bind";
 import style from "./Register.module.scss";
 const cx = classNames.bind(style);
@@ -32,7 +29,7 @@ const signUpFieldsData = [
   },
   {
     columnNum: 12,
-    label: "Adress",
+    label: "Address",
     fieldName: "address",
     type: "text",
     regex_check_type: "letter",
@@ -62,15 +59,30 @@ const signUpFieldsData = [
 ];
 
 const Register = ({ setFormSwitcher }) => {
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
+  const validateRegisterUserInformation = validateObjectWithKeyList(
+    ["firstName", "lastName", "password", "email", "address", "phoneNumber"],
+    userInfo
+  );
 
-  useRegister(userInfo);
+  useEffect(() => {
+    validateRegisterUserInformation &&
+      fetchApi.post("auth/register", userInfo).then((response) => {
+        dispatch({
+          type: SET_AUTH_STATUS,
+          payload: {
+            status: "register",
+          },
+        });
+      });
+  }, [userInfo, validateRegisterUserInformation]);
 
   return (
     <>
       <FormGroup
         formFieldsData={signUpFieldsData}
-        getUserDatagetterObj={setUserInfo}
+        getUserDataGetterObj={setUserInfo}
         action="Sign up"
       />
 
@@ -82,37 +94,3 @@ const Register = ({ setFormSwitcher }) => {
   );
 };
 export default Register;
-
-const useRegister = (userInfo) => {
-  const dispatch = useDispatch();
-  const isCorrect = validateObjectWithKeyList(
-    ["firstName", "lastName", "password", "email", "address", "phoneNumber"],
-    userInfo
-  );
-
-  const { fetchResultData, isLoading } = usePost(
-    "user/register",
-    isCorrect,
-    userInfo
-  );
-
-  if (fetchResultData.status === "success") {
-    // ? Register success
-    dispatch({
-      type: SET_AUTH_STATUS,
-      payload: {
-        status: "register",
-      },
-    });
-    dispatch({
-      type: STORE_CURRENT_USER_TOKEN,
-      payload: {
-        data: userInfo,
-      },
-    });
-  } else {
-    // ! Fail
-  }
-
-  return isLoading && <LoadingPage />;
-};

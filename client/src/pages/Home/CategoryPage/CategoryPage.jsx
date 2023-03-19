@@ -6,7 +6,7 @@ import Button from "~/components/helpers/Button/Button";
 import Brands from "./Brands/Brands";
 import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 import { useGet } from "~/services/utils/fetch";
-
+import { useTitle } from "~/customizes/hooks";
 // ? Assets
 import overviewImg from "~/assets/img/CategoryPage/overview_img.png";
 import banner from "~/assets/img/CategoryPage/collecttions/banner.png";
@@ -17,6 +17,8 @@ import style from "./CategoryPage.module.scss";
 const cx = classNames.bind(style);
 
 const SensationalProducts = (props) => {
+  const navigate = useNavigate();
+  const directionLink = `/home/c/${props.categoryData.name}/${props.categoryData.id}/products`;
   const renderProductsDetail = () => {
     return props.categoryData.subCategory.map((productDetail, index) => {
       return (
@@ -90,7 +92,9 @@ const SensationalProducts = (props) => {
                 <Button
                   size="small"
                   type="primary"
-                  onClick={props.handleSwitchToProductPage}
+                  onClick={() => {
+                    navigate(directionLink);
+                  }}
                 >
                   {`View All ${props.categoryData.name}`}
                 </Button>
@@ -156,14 +160,7 @@ const Collection = (props) => {
 
 const CategoryPage = (props) => {
   const params = useParams();
-  const navigate = useNavigate();
   const { fetchResultData, isLoading } = useGet(`category/${params["id"]}`);
-
-  const handleSwitchToProductPage = () => {
-    navigate(
-      `/home/c/${fetchResultData.data.name}/${fetchResultData.data.id}/products`
-    );
-  };
 
   return isLoading ? (
     <LoadingPage />
@@ -198,10 +195,7 @@ const CategoryPage = (props) => {
           </div>
         </div>
       </div>
-      <SensationalProducts
-        categoryData={fetchResultData.data}
-        handleSwitchToProductPage={handleSwitchToProductPage}
-      />
+      <SensationalProducts categoryData={fetchResultData.data} />
       <Collection />
       <Brands />
     </div>

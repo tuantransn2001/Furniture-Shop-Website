@@ -40,10 +40,41 @@ class ShoppingCartController {
       res.status(500).send(err);
     }
   }
+  static async deleteById(req, res) {
+    try {
+      const { id } = req.params;
+
+      const targetCartItem = await Shopping_cart_item.findOne({
+        where: { id },
+      });
+
+      if (targetCartItem) {
+        await Shopping_cart_item.destroy({
+          where: {
+            id,
+          },
+        });
+
+        res.status(201).send({
+          status: "success",
+          message: `Delete success product with id: ${id}`,
+        });
+      } else {
+        res.status(404).send({
+          status: "err",
+          message: `Product with id: ${id} not found !! Pls check it and try again`,
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        status: "err",
+        message: err,
+      });
+    }
+  }
   static async addCartItem(req, res) {
     try {
       const { product_id, shopping_cart_id, unit_price } = req.body;
-
       // ? Check product is already exist or not
       const foundProduct = await Shopping_cart_item.findOne({
         where: {
@@ -57,6 +88,7 @@ class ShoppingCartController {
         await foundProduct.save();
         res.status(200).send({
           status: "success",
+          data: foundProduct,
           message:
             "You are already have this in your basket ! we added one more kind of product for you!",
         });
@@ -74,6 +106,7 @@ class ShoppingCartController {
         res.status(200).send({
           status: "success",
           message: "Add product success!",
+          data: newProductItem,
         });
       }
     } catch (err) {
@@ -93,13 +126,13 @@ class ShoppingCartController {
         },
       });
 
-      if (direction * 1 === -1) {
+      if (direction === "minus") {
         // ? Minus
         await targetProduct.update({
           quantity:
             targetProduct.quantity <= 1 ? 1 : (targetProduct.quantity -= 1),
         });
-      } else if (direction * 1 === 1) {
+      } else if (direction === "plus") {
         // ? Plus
         await targetProduct.update({
           quantity:

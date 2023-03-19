@@ -1,0 +1,90 @@
+@import "../../../sass/helpers/variable.scss";
+@import "../../../sass/helpers/mixin.scss";
+@import "../../../sass/helpers/extend.scss";
+
+.default-text {
+  @include text-style($fs-1, $medium, none, none, none, none, $primary-color);
+}
+.default-text-1 {
+  @extend .default-text;
+  font-size: $fs-2;
+}
+.strong-text {
+  @extend .default-text;
+  font-size: $fs-2;
+  font-weight: $semi-bold;
+}
+.strong-text-1 {
+  @extend .strong-text;
+  font-size: $fs-7;
+  font-weight: $semi-bold;
+}
+
+.checkout-order-review-wrapper {
+  padding: 2rem 3rem;
+  border: 0.2rem dashed $primary-color;
+  background-color: $white-5;
+  @include flex-box(column, 1rem, none, none);
+  & table {
+    @include flex-box(column, 1rem, none, none);
+    & thead {
+      padding: 1rem 0;
+      border-bottom: 0.1rem solid rgba($color: $primary-color, $alpha: 0.6);
+      & tr {
+        @include flex-box(row, none, center, space-between);
+      }
+    }
+    & tbody {
+      @include flex-box(column, none, none, none);
+      padding-bottom: 0.8rem;
+      & tr {
+        @include flex-box(row, none, center, space-between);
+        padding: 1.2rem 0;
+        border-bottom: 0.1rem dashed rgba($color: $primary-color, $alpha: 0.8);
+      }
+    }
+    & tfoot {
+      padding: 1rem 0;
+
+      & tr {
+        & td {
+          .footer-shipping-options-wrapper {
+            @include flex-box(column, 0.8rem, none, none);
+          }
+        }
+      }
+    }
+  }
+}
+
+.cart-total-wrapper {
+  padding: 2.2rem 0;
+  border-top: 0.1rem solid rgba($color: $primary-color, $alpha: 0.6);
+  @include flex-box(row, none, center, space-between);
+}
+
+.policy-and-term-wrapper {
+  margin: 2rem 0 0.8rem;
+  @include flex-box(column, 2rem, none, none);
+  .policy-and-term-item-wrapper {
+    @include flex-box(row, 0.8rem, none, none);
+    .input-checkbox-wrapper {
+      width: 2rem;
+      height: 2rem;
+      & input {
+        width: 80%;
+        height: 80%;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    & span {
+      @extend .default-text;
+      & span {
+        color: $red-1;
+      }
+    }
+  }
+}

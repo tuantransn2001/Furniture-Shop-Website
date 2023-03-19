@@ -25,13 +25,13 @@ const inputFieldsData = [
   },
 ];
 
-const SingleImageUploadModal = ({ getImageInfor }) => {
+const SingleImageUploadModal = ({ getImageInfo }) => {
   const submitBtnRef = useRef(null);
   const filePickerTagRef = useRef(null);
   const uploadContentRef = useRef(null);
   const inputTagArrRef = useRef([]);
   const [file, setFile] = useState(null);
-  const [fileInfor, getFileInfor] = useState({});
+  const [fileInfo, getFileInfo] = useState({});
   const [isSubmitSuccess, setIsSubmitSuccess] = useState("fail");
   const renderInputFields = () => {
     return inputFieldsData.map((fieldData, index) => {
@@ -56,7 +56,7 @@ const SingleImageUploadModal = ({ getImageInfor }) => {
       const { element, data } = inputTagObj;
       element &&
         element.addEventListener("change", (event) => {
-          getFileInfor((prevState) => {
+          getFileInfo((prevState) => {
             return {
               ...prevState,
               [data.fieldName]: event.target.value,
@@ -70,7 +70,7 @@ const SingleImageUploadModal = ({ getImageInfor }) => {
         const { element, data } = inputTagObj;
         element &&
           element.removeEventListener("change", (event) => {
-            getFileInfor((prevState) => {
+            getFileInfo((prevState) => {
               return {
                 ...prevState,
                 [data.fieldName]: event.target.value,
@@ -79,7 +79,7 @@ const SingleImageUploadModal = ({ getImageInfor }) => {
           });
       });
     };
-  }, [fileInfor]);
+  }, [fileInfo]);
   // * ========== Get File Information ==========
   useEffect(() => {
     const filePickerTagEl = filePickerTagRef.current;
@@ -105,14 +105,14 @@ const SingleImageUploadModal = ({ getImageInfor }) => {
   useEffect(() => {
     const handleOnSubmit = (e) => {
       const isConfirm =
-        validateObjectWithKeyList(["fileName", "description"], fileInfor) &&
+        validateObjectWithKeyList(["fileName", "description"], fileInfo) &&
         file;
 
       if (isConfirm) {
-        // ? Set image information
-        getImageInfor({
+        // ? Set image infomation
+        getImageInfo({
           file: file[0],
-          ...fileInfor,
+          ...fileInfo,
         });
         setIsSubmitSuccess("success");
       } else {
@@ -125,7 +125,7 @@ const SingleImageUploadModal = ({ getImageInfor }) => {
     submitBtnEl && submitBtnEl.addEventListener("click", handleOnSubmit);
     return () =>
       submitBtnEl && submitBtnEl.removeEventListener("click", handleOnSubmit);
-  }, [file, fileInfor]);
+  }, [file, fileInfo]);
   return (
     <div className={`${cx("single-img-upload-wrapper")} grid`}>
       <div className="row">

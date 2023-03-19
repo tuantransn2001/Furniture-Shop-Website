@@ -1,27 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 import EmptyCartContent from "./EmptyCartContent/EmptyCartContent";
 import CartWithProductInfo from "./CartWithProductInfo/CartWithProductInfo";
 import Button from "~/components/helpers/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
+import { fetchApi } from "~/services/utils/fetch";
 import { DISPLAY_CART_MODAL } from "~/redux/constants/CartConstants/CartConstants";
 import { useSelector, useDispatch } from "react-redux";
-import { useGet } from "~/services/utils/fetch";
 
 import classNames from "classnames/bind";
 import style from "./ShoppingBasket.module.scss";
-const cx = classNames.bind(style);
+import { SET_CART_LIST } from "~/redux/constants/CartConstants/CartConstants";
 
+const cx = classNames.bind(style);
 const ShoppingCart = (props) => {
   const dispatch = useDispatch();
+  useSetCartList(dispatch);
+  const cartList = useSelector((state) => state.CartReducer.cartList);
   const isCartModalOn = useSelector((state) => state.CartReducer.isCartModalOn);
-  const { fetchResultData, isLoading } = useGet("shopping-cart");
 
   const renderCartSection = () => {
-    const isCartEmpty = fetchResultData.data.length === 0;
+    const isCartEmpty = cartList.length === 0;
     if (isCartEmpty) {
       return <EmptyCartContent />;
     }
@@ -30,42 +30,53 @@ const ShoppingCart = (props) => {
 
   return (
     <div
-      className={cx("cart-slidebar-wrapper", {
+      className={cx("cart-sidebar-wrapper", {
         show: isCartModalOn,
       })}
     >
-      {isLoading ? (
-        <LoadingPage />
-      ) : (
-        <>
-          <header className={cx("cart-slidebar-header")}>
-            <>
-              <h1 className={cx("cart-slidebar-title")}>Shopping Basket</h1>
-              <span className={`${cx("shop-cart-count")} flex-center`}>0</span>
-            </>
-            <Button
-              type="close-shopping-basket"
-              size={null}
-              ghost
-              onClick={(e) => {
-                dispatch({
-                  type: DISPLAY_CART_MODAL,
-                  payload: {
-                    userAction: "hide",
-                  },
-                });
-              }}
-            >
-              <FontAwesomeIcon icon={faXmark} />
-            </Button>
-          </header>
-          <section className={cx("cart-slider-body")}>
-            {renderCartSection()}
-          </section>
-        </>
-      )}
+      <>
+        <header className={cx("cart-sidebar-header")}>
+          <>
+            <h1 className={cx("cart-sidebar-title")}>Shopping Basket</h1>
+            <span className={`${cx("shop-cart-count")} flex-center`}>
+              {cartList.length}
+            </span>
+          </>
+          <Button
+            type="close-shopping-basket"
+            size={null}
+            ghost
+            onClick={(e) => {
+              dispatch({
+                type: DISPLAY_CART_MODAL,
+                payload: {
+                  userAction: "hide",
+                },
+              });
+            }}
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </Button>
+        </header>
+        <section className={cx("cart-slider-body")}>
+          {renderCartSection()}
+        </section>
+      </>
     </div>
   );
+};
+
+const useSetCartList = (dispatch) => {
+  useEffect(() => {
+    fetchApi.get("shopping-cart").then((response) => {
+      dispatch({
+        type: SET_CART_LIST,
+        payload: {
+          data: response.data,
+        },
+      });
+    });
+  }, []);
 };
 
 export default ShoppingCart;

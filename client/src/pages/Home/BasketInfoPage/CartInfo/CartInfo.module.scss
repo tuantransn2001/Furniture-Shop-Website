@@ -1,0 +1,57 @@
+@import "../../../../sass/helpers/variable.scss";
+@import "../../../../sass/helpers/mixin.scss";
+@import "../../../../sass/helpers/extend.scss";
+
+.strong-text {
+  @include text-style(
+    $fs-2,
+    $semi-bold,
+    none,
+    none,
+    center,
+    Capitalize,
+    $primary-color
+  );
+}
+
+.cart-table {
+  width: 100%;
+  & thead {
+    width: inherit;
+    border-bottom: 0.1rem solid $primary-color;
+    & tr th {
+      padding: 2rem;
+      @extend .strong-text;
+    }
+  }
+  & tbody {
+    & tr {
+      & td {
+        padding: 2rem 2rem;
+        & span {
+          display: block;
+          margin: 2rem 0;
+        }
+      }
+    }
+  }
+  & tfoot {
+    display: none;
+  }
+}
+.cart-product-info {
+  @extend .strong-text;
+  text-align: left;
+  @include flex-box(row, 1.8rem, center, flex-start);
+  & img {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+.update-basket-wrapper {
+  padding: 30px 0 15px;
+  margin: 30px 0 15px;
+  border-top: 0.1rem dashed $primary-color;
+  border-bottom: 0.1rem dashed $primary-color;
+}

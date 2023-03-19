@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 import ProductDetail from "./ProductDetail/ProductDetail";
 import ProductList from "./ProductList/ProductList";
 import FormGroup from "~/components/helpers/FormGroup/FormGroup";
@@ -8,8 +7,8 @@ import SingleImageUploadModal from "~/components/SingleImageUploadModal/SingleIm
 import Button from "~/components/helpers/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { usePaginate } from "~/customizes/hooks";
-import { fetchApi, useGet } from "~/services/utils/fetch";
+
+import { fetchApi } from "~/services/utils/fetch";
 import { validateObjectWithKeyList } from "~/common/common";
 import { addProductFormData } from "./AddProductData";
 import classNames from "classnames/bind";
@@ -98,14 +97,14 @@ const AddProductFormModal = ({ isModalOn, setIsModalOn }) => {
         <section className="grid">
           <div className="row">
             <div className="c-12 gutter">
-              <SingleImageUploadModal getImageInfor={getProductInfo} />
+              {/* <SingleImageUploadModal getImageInfo={getProductInfo} /> */}
             </div>
           </div>
           <div className="row">
             <div className="c-12 gutter">
               <FormGroup
                 formFieldsData={addProductFormData}
-                getUserDatagetterObj={getProductInfo}
+                getUserDataGetterObj={getProductInfo}
               />
             </div>
           </div>
@@ -117,15 +116,8 @@ const AddProductFormModal = ({ isModalOn, setIsModalOn }) => {
 
 const AddProductPage = (props) => {
   const [isModalOn, setIsModalOn] = useState(false);
-  const { fetchResultData, isLoading } = useGet("product");
-  const { itemsPerPageData, pageCount, handlePageOnChange } = usePaginate(
-    3,
-    fetchResultData.data || []
-  );
 
-  return isLoading ? (
-    <LoadingPage />
-  ) : (
+  return (
     <>
       <AddProductFormModal isModalOn={isModalOn} setIsModalOn={setIsModalOn} />
       <div className={cx("add-product-page-wrapper")}>
@@ -146,11 +138,7 @@ const AddProductPage = (props) => {
           <div className="grid">
             <div className="row">
               <div className="c-8 gutter">
-                <ProductList
-                  itemsPerPageData={itemsPerPageData}
-                  pageCount={pageCount}
-                  handlePageOnChange={handlePageOnChange}
-                />
+                <ProductList />
               </div>
               <div className="c-4 gutter">
                 <ProductDetail />

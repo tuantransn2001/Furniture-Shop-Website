@@ -97,6 +97,13 @@ export const PromptText = styled.div`
       }
     }
   }}
-  display: ${(props) => (props.isShow ? "block" : "none")};
+  display: ${(props) => {
+    if (props.isShow) {
+      return "block";
+    }
+
+    return "none";
+  }};
+
   z-index: ${(props) => props.layer || 999};
 `;

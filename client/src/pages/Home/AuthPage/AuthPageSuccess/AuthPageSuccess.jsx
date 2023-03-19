@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { SET_AUTH_STATUS } from "~/redux/constants/AuthConstants/AuthConstants";
 import { useNavigate } from "react-router-dom";
-import { useGet } from "~/services/utils/fetch";
-
-import LoadingPage from "~/pages/LoadingPage/LoadingPage";
 
 import Tooltip from "~/components/helpers/Tooltip/Tooltip";
 import Button from "~/components/helpers/Button/Button";
-import ToastMessage from "~/components/helpers/ToastMessage/ToastMessage";
-
-import UserInformation from "./UserInformation/UserInformation";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -30,6 +25,7 @@ const authSuccessStatusContent = {
 };
 
 const DirectionButtons = ({ authStatus }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleNavigateTo = (directionPath) => {
@@ -38,34 +34,52 @@ const DirectionButtons = ({ authStatus }) => {
 
   if (authStatus === "login") {
     return (
-      <>
-        <Tooltip
-          placement="top"
-          promptText="Feature is on develop state"
-          maxSize
-        >
-          <Button size="small" type="primary" maxSize>
-            Continue shopping
-          </Button>
-        </Tooltip>
-        <Button
-          size="small"
-          type="primary"
-          maxSize
-          onClick={(e) => {
-            handleNavigateTo("/");
-          }}
-        >
-          Back to home
-        </Button>
-      </>
+      <div className="grid">
+        <div className="row">
+          <div className="c-6 gutter">
+            <Tooltip
+              placement="top"
+              promptText="Feature is on develop state"
+              maxSize
+            >
+              <Button size="small" type="primary" maxSize>
+                Continue shopping
+              </Button>
+            </Tooltip>
+          </div>
+          <div className="c-6 gutter">
+            <Button
+              size="small"
+              type="primary"
+              maxSize
+              onClick={(e) => {
+                handleNavigateTo("/");
+              }}
+            >
+              Back to home
+            </Button>
+          </div>
+        </div>
+      </div>
     );
   }
 
   if (authStatus === "register") {
     return (
       <>
-        <Button size="small" type="primary" maxSize>
+        <Button
+          size="small"
+          type="primary"
+          maxSize
+          onClick={() => {
+            dispatch({
+              type: SET_AUTH_STATUS,
+              payload: {
+                status: "",
+              },
+            });
+          }}
+        >
           Log in
         </Button>
         <Button
@@ -83,29 +97,24 @@ const DirectionButtons = ({ authStatus }) => {
   }
 };
 
-const AuthFormContent = ({ authStatus, user_detail }) => {
-  if (authStatus === "login") {
-    return (
-      <>
-        <h1 className={cx("auth-page-success-title")}>
-          {/* THANK YOU FOR YOUR SUBSCRIPTION. */}
-          {authSuccessStatusContent[authStatus].title}
-        </h1>
-        <span className={cx("auth-page-success-subtitle")}>
-          {authSuccessStatusContent[authStatus].content}
-        </span>
-      </>
-    );
-  }
+const AuthFormContent = ({ authStatus }) => {
+  return (
+    <>
+      <h1 className={cx("auth-page-success-title")}>
+        {authSuccessStatusContent[authStatus].title}
+      </h1>
+      <span className={cx("auth-page-success-subtitle")}>
+        {authSuccessStatusContent[authStatus].content}
+      </span>
+    </>
+  );
 };
 
 const AuthPageSuccess = (props) => {
   const { title, content } = props;
   const authStatus = useSelector((state) => state.AuthReducer.authStatus);
-  const user_detail = useSelector((state) => state.AuthReducer.user_detail);
-  const { fetchResultData, isLoading } = useGet(`user/${user_detail.id}`);
 
-  const renderAuthPageContent = () => {
+  const AuthPageContent = () => {
     return (
       <div className={cx("auth-page-success")}>
         <div className={`${cx("auth-page-icon-wrapper")} flex-center`}>
@@ -113,7 +122,6 @@ const AuthPageSuccess = (props) => {
         </div>
         <AuthFormContent
           authStatus={authStatus}
-          user_detail={fetchResultData.data}
           title={title}
           content={content}
         />
@@ -126,11 +134,12 @@ const AuthPageSuccess = (props) => {
 
   return (
     <div className={cx("auth-page-success-wrapper")}>
-      {isLoading ? <LoadingPage /> : <>{renderAuthPageContent()}</>}
+      <AuthPageContent />
     </div>
   );
 };
 
 export default AuthPageSuccess;
 
-// TODO: Handle switch to user detail page
+// TODO: When user register success -> option 1: navigate to login form
+// TODO:                            -> option 2: navigate to shopping view

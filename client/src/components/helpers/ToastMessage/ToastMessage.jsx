@@ -44,67 +44,68 @@ const IconType = ({ type }) => {
 const CloseToastButton = ({ handleCloseToast }) => {
   return (
     <div className={cx("close-toast-btn-wrapper")}>
-      <Button size="medium" type="primary" ghost onClick={handleCloseToast}>
+      <Button
+        size="medium"
+        type="primary"
+        ghost
+        onClick={() => {
+          handleCloseToast(false);
+        }}
+      >
         <FontAwesomeIcon color="gray" icon={faXmark} />
       </Button>
     </div>
   );
 };
 
-// const ProcessBar = ({ type, handleCloseToast }) => {
-//   const [processPercent, setProcessPercent] = useState(0);
+const ProcessBar = ({ type, handleCloseToast }) => {
+  const [processPercent, setProcessPercent] = useState(0);
 
-//   const closeToast = handleCloseToast;
-//   if (processPercent >= 100) {
-//     closeToast();
-//   }
+  if (processPercent >= 100) {
+    handleCloseToast();
+  }
 
-//   useEffect(() => {
-//     const handleIncreaseBaseOnTime = () => {
-//       const interval = setInterval(() => {
-//         setProcessPercent((prev) => (prev === 100 ? 0 : prev + 2.5));
-//         if (processPercent >= 100) {
-//           clearInterval(interval);
-//         }
-//       }, 200);
-//     };
+  useEffect(() => {
+    const handleIncreaseBaseOnTime = () => {
+      const interval = setInterval(() => {
+        setProcessPercent((prev) => (prev === 100 ? 0 : prev + 2.5));
+        if (processPercent >= 100) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    };
 
-//     handleIncreaseBaseOnTime();
+    handleIncreaseBaseOnTime();
 
-//     return () => {
-//       handleIncreaseBaseOnTime();
-//     };
-//   }, []);
-
-//   return (
-//     <div className={cx("process-bar-wrapper")}>
-//       <div
-//         style={{
-//           width: `${processPercent}%`,
-//           backgroundColor: stuff.color[type],
-//         }}
-//         className={cx("process-bar")}
-//       />
-//     </div>
-//   );
-// };
-
-const ToastMessage = (props) => {
-  const { title, message, type, visible } = props;
-  const [isClose, setIsClose] = useState(false);
-
-  const handleCloseToast = () => {
-    setIsClose(true);
-  };
+    return () => {
+      handleIncreaseBaseOnTime();
+    };
+  }, []);
 
   return (
-    <div
-      className={cx(
-        "toast-message-wrapper",
-        { close: isClose },
-        { visible: visible }
-      )}
-    >
+    <div className={cx("process-bar-wrapper")}>
+      <div
+        style={{
+          width: `${processPercent}%`,
+          backgroundColor: stuff.color[type],
+        }}
+        className={cx("process-bar")}
+      />
+    </div>
+  );
+};
+
+const ToastMessage = (props) => {
+  const { title, message, type, visible, handleCloseToast } = props;
+
+  useEffect(() => {
+    return () => {
+      handleCloseToast();
+    };
+  });
+
+  return (
+    <div className={cx("toast-message-wrapper", { visible: visible })}>
       <IconType type={type} />
 
       <div className={cx("toast-message-content")}>
@@ -113,7 +114,7 @@ const ToastMessage = (props) => {
       </div>
 
       <CloseToastButton handleCloseToast={handleCloseToast} />
-      {/* <ProcessBar type={type} handleCloseToast={handleCloseToast} /> */}
+      <ProcessBar type={type} handleCloseToast={handleCloseToast} />
     </div>
   );
 };

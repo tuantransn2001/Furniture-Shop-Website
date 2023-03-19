@@ -23,20 +23,25 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      product_id: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      unit_price: {
-        allowNull: false,
+      customer_firstName: {
         type: DataTypes.STRING,
       },
-      quantity: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
+      customer_lastName: {
+        type: DataTypes.STRING,
       },
-      discount: {
-        allowNull: false,
+      customer_phoneNumber: {
+        type: DataTypes.STRING,
+      },
+      customer_email: {
+        type: DataTypes.STRING,
+      },
+      customer_address: {
+        type: DataTypes.STRING,
+      },
+      order_note: {
+        type: DataTypes.STRING,
+      },
+      order_payment_type: {
         type: DataTypes.STRING,
       },
     },

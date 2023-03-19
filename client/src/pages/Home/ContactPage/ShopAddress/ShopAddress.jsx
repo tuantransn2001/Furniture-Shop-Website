@@ -19,16 +19,16 @@ const shopAddressBoxData = [
 const ShopAddress = (props) => {
   const renderAddressBreakLine = (addressArr) => {
     return (
-      <p className={cx("shop-address")}>
-        {addressArr.map((addressStr) => {
+      <div className={cx("shop-address")}>
+        {addressArr.map((addressStr, index) => {
           return (
-            <>
+            <div key={index}>
               <span>{addressStr}</span>
               <br></br>
-            </>
+            </div>
           );
         })}
-      </p>
+      </div>
     );
   };
 

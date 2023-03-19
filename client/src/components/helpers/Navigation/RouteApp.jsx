@@ -8,13 +8,15 @@ import ContactPage from "~/pages/Home/ContactPage/ContactPage";
 import InforPage from "~/pages/Home/InforPage/InforPage";
 import ProductPage from "~/pages/Home/ProductPage/ProductPage";
 import ProductDetailPage from "~/pages/Home/ProductDetailPage/ProductDetailPage";
+import CheckoutPage from "~/pages/Home/CheckoutPage/CheckoutPage";
+import BasketInfoPage from "~/pages/Home/BasketInfoPage/BasketInfoPage";
 const routeAppData = [
   {
     path: "/",
     Component: <HomePage />,
   },
   {
-    path: "/home/authorize",
+    path: "/home/authenticate",
     Component: <AuthPage />,
   },
   {
@@ -36,6 +38,14 @@ const routeAppData = [
   {
     path: "/home/information",
     Component: <InforPage />,
+  },
+  {
+    path: "/home/checkout",
+    Component: <CheckoutPage />,
+  },
+  {
+    path: "/home/basket",
+    Component: <BasketInfoPage />,
   },
 ];
 
