@@ -17,9 +17,14 @@ const PaymentMethod = (props) => {
     paymentOptionEls &&
       paymentOptionEls.map((el, index) => {
         el &&
-          el.addEventListener("click", () => {
+          el.addEventListener("click", (e) => {
             setIndexActive(index);
-            getUserPayment(el.type);
+            getUserPayment((prev) => {
+              return {
+                ...prev,
+                type: e.target.id,
+              };
+            });
           });
       });
   }, []);

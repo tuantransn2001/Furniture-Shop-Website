@@ -12,8 +12,25 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      discount: {
-        allowNull: true,
+      customer_firstName: {
+        type: Sequelize.STRING,
+      },
+      customer_lastName: {
+        type: Sequelize.STRING,
+      },
+      customer_phoneNumber: {
+        type: Sequelize.STRING,
+      },
+      customer_email: {
+        type: Sequelize.STRING,
+      },
+      customer_address: {
+        type: Sequelize.STRING,
+      },
+      order_note: {
+        type: Sequelize.STRING,
+      },
+      order_payment_type: {
         type: Sequelize.STRING,
       },
       createdAt: {

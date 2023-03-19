@@ -7,6 +7,7 @@ const FormGroup = ({
   formFieldsData,
   getUserDataGetterObj,
   customSubmitBtnStyle,
+  actionButtonRef,
   actionBtnColumn,
   formCustomStyle,
   action,
@@ -139,11 +140,14 @@ const FormGroup = ({
             } gutter mt-1`}
           >
             <Button
+              ref={actionButtonRef}
               size="medium"
               type="primary"
               maxSize
               status={buttonStatus}
-              onClick={handleSubmitButtonOnClick}
+              onClick={() => {
+                handleSubmitButtonOnClick();
+              }}
               customStyle={customSubmitBtnStyle}
             >
               {action ? action : "Submit"}

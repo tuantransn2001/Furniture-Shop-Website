@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Order_detail.hasMany(models.Order_item);
     }
   }
   Order_detail.init(
@@ -24,8 +23,25 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      discount: {
-        allowNull: true,
+      customer_firstName: {
+        type: DataTypes.STRING,
+      },
+      customer_lastName: {
+        type: DataTypes.STRING,
+      },
+      customer_phoneNumber: {
+        type: DataTypes.STRING,
+      },
+      customer_email: {
+        type: DataTypes.STRING,
+      },
+      customer_address: {
+        type: DataTypes.STRING,
+      },
+      order_note: {
+        type: DataTypes.STRING,
+      },
+      order_payment_type: {
         type: DataTypes.STRING,
       },
     },

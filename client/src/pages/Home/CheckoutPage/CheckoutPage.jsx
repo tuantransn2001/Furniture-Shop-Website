@@ -1,23 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Page from "~/components/helpers/Page/Page";
 import FormGroup from "~/components/helpers/FormGroup/FormGroup";
 import CheckoutOrderReview from "~/components/CheckoutOrderReview/CheckoutOrderReview";
 
-import ToastMessage from "~/components/helpers/ToastMessage/ToastMessage";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import { requireInfoData } from "./data";
 import { useTitle } from "~/customizes/hooks";
 import { validateObjectWithKeyList } from "~/common/common";
 import { fetchApi } from "~/services/utils/fetch";
-import classNames from "classnames/bind";
-import style from "./CheckoutPage.module.scss";
-
-const cx = classNames.bind(style);
+import Modal from "../../../components/helpers/Modal/Modal";
 
 const CheckoutPage = (props) => {
+  const cartList = useSelector((state) => state.CartReducer.cartList);
+  console.log(cartList);
   const [promo, getPromo] = useState({});
+  const [userPayment, getUserPayment] = useState({});
   const [userOrderInformation, getUserOrderInformation] = useState({});
-  const [toastData, setToastData] = useState({});
-  const [visibleToast, setVisibleToast] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOnClick = useCallback(() => {
+    const isFetch = validateObjectWithKeyList(
+      [
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "email",
+        "address",
+        "note",
+        "discount_price",
+        "userPayment",
+      ],
+      userOrderInformation
+    );
+
+    if (isFetch) {
+      axios
+        .post("/order-detail/create-order", userOrderInformation)
+        .then((res) => {})
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [promo, userOrderInformation, userPayment]);
 
   useEffect(() => {
     const validatePromo = validateObjectWithKeyList(["postCode"], promo);
@@ -26,47 +52,39 @@ const CheckoutPage = (props) => {
         fetchApi
           .get(`/order-detail/check_promo/${promo.postCode}`)
           .then((response) => {
-            console.log(response);
-            const isCallApiSuccess = response.status === 200;
-            if (isCallApiSuccess) {
-              // ? Success
-              setToastData((prev) => {
-                return {
-                  ...prev,
-                  title: "Validate Successfully!",
-                  message: `You have been added successfully ${response.data.discount_price}`,
-                  type: "success",
-                };
-              });
-            } else {
-              setToastData((prev) => {
-                return {
-                  ...prev,
-                  title: "Validate Fail!",
-                  message: "Your promo is invalid or out date!",
-                  type: "warn",
-                };
-              });
-            }
-
-            setVisibleToast(true);
+            getUserOrderInformation((prev) => {
+              return {
+                ...prev,
+                discount_price: response.data.discount_price,
+              };
+            });
+            setModalContent(
+              `You have been got ${response.data.discount_price} discount`
+            );
+            setModalVisible(true);
           });
       } catch (err) {
-        setToastData((prev) => {
-          return {
-            ...prev,
-            title: "Validate Fail!",
-            message: "The server is working wrong!",
-            type: "warn",
-          };
-        });
-        setVisibleToast(true);
+        setModalContent(`Your promo is In-valid`);
+        setModalVisible(true);
       }
     }
   }, [promo]);
 
-  useTitle("Checkout - Lenleys");
+  useEffect(() => {
+    const validateUserPayment = validateObjectWithKeyList(
+      ["type"],
+      userPayment
+    );
+    validateUserPayment &&
+      getUserOrderInformation((prev) => {
+        return {
+          ...prev,
+          userPayment: userPayment.type,
+        };
+      });
+  }, [userPayment]);
 
+  useTitle("Checkout - Lenleys");
   return (
     <Page
       title="Checkout"
@@ -89,6 +107,13 @@ const CheckoutPage = (props) => {
         </span>
       }
     >
+      <Modal
+        message={modalContent}
+        visible={modalVisible}
+        handleCloseModal={() => {
+          setModalVisible(false);
+        }}
+      />
       <div className="grid wide" style={{ width: "1000px" }}>
         <div className="row">
           <div className="c-7 gutter">
@@ -119,27 +144,16 @@ const CheckoutPage = (props) => {
               <FormGroup
                 formFieldsData={requireInfoData}
                 getUserDataGetterObj={getUserOrderInformation}
-                customSubmitBtnStyle={{
-                  display: "none",
-                }}
-                action="Place Order"
+                action="Confirm"
               />
-              {visibleToast && (
-                <ToastMessage
-                  title={toastData.title}
-                  message={toastData.message}
-                  type={toastData.type}
-                  visible
-                  handleCloseToast={() => {
-                    setVisibleToast(false);
-                  }}
-                />
-              )}
             </>
           </div>
           <div className="c-1 gutter"></div>
           <div className="c-4 gutter">
-            <CheckoutOrderReview />
+            <CheckoutOrderReview
+              actionHandler={handleOnClick}
+              getUserPayment={getUserPayment}
+            />
           </div>
         </div>
       </div>

@@ -1,11 +1,13 @@
 const express = require("express");
-const oderDetailRouter = express.Router();
+const orderDetailRouter = express.Router();
 const OrderDetailController = require("../controllers/order_detail-controller");
 
-oderDetailRouter.get("/", OrderDetailController.getOderDetailList);
-oderDetailRouter.get(
+orderDetailRouter.get("/", OrderDetailController.getOderDetailList);
+orderDetailRouter.get(
   "/check_promo/:promo",
   OrderDetailController.validateUserPromo
 );
 
-module.exports = { oderDetailRouter };
+orderDetailRouter.post("/create-order", OrderDetailController.createOrder);
+
+module.exports = { orderDetailRouter };

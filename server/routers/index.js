@@ -5,7 +5,7 @@ const { categoryRouter } = require("./category-router");
 const { productRouter } = require("./product-router");
 const { imageRouter } = require("./image-router");
 const { optionRouter } = require("./option-router");
-const { oderDetailRouter } = require("./oder_detail-router");
+const { orderDetailRouter } = require("./oder_detail-router");
 const { shoppingCartRouter } = require("./shopping_cart-router");
 const { authRouter } = require("./auth-router");
 const { promoRouter } = require("./promo-router");
@@ -23,9 +23,10 @@ rootRouter.use("/img", imageRouter);
 // ? Options
 rootRouter.use("/option", optionRouter);
 // ? Order Detail
-rootRouter.use("/order-detail", oderDetailRouter);
+rootRouter.use("/order-detail", orderDetailRouter);
 // ? Shopping cart
 rootRouter.use("/shopping-cart", shoppingCartRouter);
 // ? Promo
-rootRouter.use("/feedback", feedBackRouter);
+rootRouter.use("/promo", promoRouter);
+
 module.exports = { rootRouter };

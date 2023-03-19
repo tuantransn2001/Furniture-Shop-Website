@@ -1,6 +1,6 @@
 import "./GlobalStyle.scss";
 const GlobalStyle = ({ children }) => {
-  return children;
+  return <>{children}</>;
 };
 
 export default GlobalStyle;

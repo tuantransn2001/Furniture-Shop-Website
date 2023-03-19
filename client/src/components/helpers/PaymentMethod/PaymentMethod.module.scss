@@ -2,29 +2,6 @@
 @import "../../../sass/helpers/mixin.scss";
 @import "../../../sass/helpers/extend.scss";
 
-.product-options-wrapper {
-  @include flex-box(column, 0.8rem, none, none);
-  .product-option-title {
-    @include text-style($fs-3, $medium, none, none, left, none, $black-2);
-  }
-  .product-option-list {
-    @include flex-box(row, 0.4rem, center, none);
-    .option-item {
-      width: 6.4rem;
-      height: 6.4rem;
-      padding: 0.1rem;
-      border: 0.1rem solid $black-3;
-      @extend .flex-center;
-      .option-item-img {
-        width: 90%;
-        height: 90%;
-      }
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-}
 .payment-option {
   height: 4.2rem;
 

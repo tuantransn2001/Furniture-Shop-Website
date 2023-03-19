@@ -9,7 +9,7 @@ class PromoControllers {
       res.status(500).send(err);
     }
   }
-  static async checkPromo(req, res) {
+  static async validatePromo(req, res) {
     const { code } = req.params;
 
     const foundPromo = await Promo.findOne({

@@ -16,7 +16,7 @@ module.exports = {
       [
         {
           id: 1,
-          promo_code: "HAPPY SHOPPING",
+          promo_code: "HAPPYSHOPPING",
           discount_price: "10%",
           createdAt: new Date(),
           updatedAt: new Date(),

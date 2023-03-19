@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "~/components/helpers/Button/Button";
 import PaymentMethod from "~/components/helpers/PaymentMethod/PaymentMethod";
 import { handleCalculateSubtotal } from "~/common/common";
@@ -7,55 +7,18 @@ import { useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import style from "./CheckoutOrderReview.module.scss";
 const cx = classNames.bind(style);
-const PolicyAndTerm = (props) => {
-  return (
-    <div className={cx("policy-and-term-wrapper")}>
-      <div className="grid">
-        <div className="row">
-          <div className="c-12 gutter mb-1">
-            <div className={cx("policy-and-term-item-wrapper")}>
-              <span className={cx("input-checkbox-wrapper")}>
-                <input type="checkbox" />
-              </span>
-              <span>
-                I have read and agree to the website terms and conditions
-                <span>*</span>
-              </span>
-            </div>
-          </div>
-          <div className="c-12 gutter">
-            <div className={cx("policy-and-term-item-wrapper")}>
-              <span className={cx("input-checkbox-wrapper")}>
-                <input type="checkbox" />
-              </span>
-              <span>
-                Sign me up to receive exclusive discounts and latest offers from
-                Lenleys. See our privacy policy for details.
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Button
-        type="primary"
-        size="medium"
-        maxSize
-        onClick={props.actionHandler}
-      >
-        {props.action || "Checkout"}
-      </Button>
-    </div>
-  );
-};
 
 const CheckoutOrderReview = (props) => {
-  const { title, action, actionHandler, isIncludesCartItem, customStyle } =
-    props;
+  const {
+    title,
+    action,
+    actionHandler,
+    isIncludesCartItem,
+    customStyle,
+    getUserPayment,
+  } = props;
   const cartList = useSelector((state) => state.CartReducer.cartList);
   const cartSubTotal = handleCalculateSubtotal(cartList);
-
-  const [userPayment, getUserPayment] = useState("");
 
   const renderTableBody = () => {
     return (
@@ -140,7 +103,38 @@ const CheckoutOrderReview = (props) => {
           },
         ]}
       />
-      <PolicyAndTerm action={action} actionHandler={actionHandler} />
+      <div className={cx("policy-and-term-wrapper")}>
+        <div className="grid">
+          <div className="row">
+            <div className="c-12 gutter mb-1">
+              <div className={cx("policy-and-term-item-wrapper")}>
+                <span className={cx("input-checkbox-wrapper")}>
+                  <input type="checkbox" />
+                </span>
+                <span>
+                  I have read and agree to the website terms and conditions
+                  <span>*</span>
+                </span>
+              </div>
+            </div>
+            <div className="c-12 gutter">
+              <div className={cx("policy-and-term-item-wrapper")}>
+                <span className={cx("input-checkbox-wrapper")}>
+                  <input type="checkbox" />
+                </span>
+                <span>
+                  Sign me up to receive exclusive discounts and latest offers
+                  from Lenleys. See our privacy policy for details.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Button type="primary" size="medium" maxSize onClick={actionHandler}>
+          {action || "Checkout"}
+        </Button>
+      </div>
     </div>
   );
 };
